@@ -351,8 +351,15 @@ query_continuation
 statement
 	: identifier ':' statement                                       #labeledStatement
 	| (local_variable_declaration | local_constant_declaration) ';'  #declarationStatement
+    | local_function                                                 #localFunction
 	| embedded_statement                                             #embeddedStatement
 	;
+
+local_function
+    : type method_member_name type_parameter_list?
+        OPEN_PARENS formal_parameter_list? CLOSE_PARENS
+        type_parameter_constraints_clauses? (method_body | right_arrow expression ';')
+    ;
 
 embedded_statement
 	: block
